@@ -213,6 +213,25 @@ for (i in 1:12){
 
 }
 
+#450k
+.notrun.meth<-function(){
+
+#HNSC syn1571424
+#BLCA syn1571509
+meth450 = loadEntity("syn1571424") 
+e450<-load.exp(file.path(meth450$cacheDir, meth450$files[[1]][1]))
+
+meth<-e450[intersect(rownames(map), rownames(e450)),]
+rm(e450)
+load("HNSC.meth.rda")
+synObjList.meth$e=meth
+save(synObjList.meth,file="HNSC.meth.rda")
+ls()
+
+}
+
+
+
 
 
 
