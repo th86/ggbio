@@ -36,8 +36,6 @@ mmList=getGeneSymbols(allattractome$meth$'BIN2_12_50003941'[,1])
 mmList[2]="PCED1B_12_45896487"
 names(mmList[2])=mmList[2]
 
-
-
 ggscatter.gene.meth<-function( synObjList, geneName, methName1, methName2, datasetList, opfileName, axislabel=NULL, ilm27k=FALSE   ){
 
   scatter.gg=list()
@@ -55,10 +53,15 @@ ggscatter.gene.meth<-function( synObjList, geneName, methName1, methName2, datas
 	load(paste(datasetList[i],".meth.rda",sep=""))
 	cat(paste(datasetList[i],".meth.rda",sep=""),"\n")
         meth= synObjList.meth$e
+	#rownames(meth)=map[rownames(meth),]
+	colnames(meth)=substr(colnames(meth),1,12)
+
+	#print(head(rownames(meth)))
+
 	expNames= colnames(synObjList[[i]]$e) #[  order( synObjList[[i]]$metagene[ sortVar, ])  ]
 	sampleNames=   intersect( expNames, colnames(meth)   )
 
-
+	
 
 	x <- IlluminaHumanMethylation27kSYMBOL
 	mapped_probes <- mappedkeys(x)
@@ -79,6 +82,8 @@ ggscatter.gene.meth<-function( synObjList, geneName, methName1, methName2, datas
 	rn=paste(rn.gn,"_",rn.chr,"_",rn.cpg,sep="")
 	rownames(meth)=rn
 
+	
+
 	cat("Rendering",datasetList[i],"...\n")
 
 	if(length(geneName)>1){
@@ -97,10 +102,6 @@ ggscatter.gene.meth<-function( synObjList, geneName, methName1, methName2, datas
 	#print(sc.data)
 	medexp=median(ge)
 	cat(medexp,"\n")
-
-
-
-
 
 	 p<-ggplot(data = sc.data, aes(x = m1, y = m2, colour = ge)) +
 	 			geom_point(size = 1) +
@@ -133,8 +134,7 @@ ggscatter.gene.meth<-function( synObjList, geneName, methName1, methName2, datas
 
 	cat('Arranging Scatterplots...\n')
 
-	tiff(file = opfileName, width =7.3, height = 7.3, units = "in", res = 300)
-
+	tiff(file = opfileName, width =7.3, height = 7.3, units = "in" ,res = 300,  compression = "lzw") 
 
 	if(ilm27k==TRUE ){
 		grid.arrange(

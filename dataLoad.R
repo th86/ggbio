@@ -105,6 +105,7 @@ load.exp<-function (file, sep = "\t")
     mset
 }
 
+
 loadsynapse <-function( mRNA.ID, cli.ID ,anno.ID , intersectClnc=TRUE) {
 cat("Downloading Synapse Entities...\n")
 	mrna = loadEntity(mRNA.ID) 
@@ -150,6 +151,16 @@ cat("Downloading Synapse Entities...\n")
 	rownames(surv.complete)=rownames(clinical.raw)[complete.cases(surv)]
 	colnames(surv.complete)=c("days","status")
 	
+
+	gender=as.character(clinical.raw[,"gender"])
+	gender=gsub('FEMALE',1,gender)
+	gender=gsub('MALE',-1,gender)
+	gender=as.numeric(gender)
+	gender[which(is.na(gender)==TRUE)]=0
+	
+	names(gender)=clinical.raw[,1]
+	
+
 	cat("Creating Metagenes...\n")
 	load("attractome.minimalist.rda")
 	rn.ge=as.matrix(gs)
@@ -166,7 +177,7 @@ cat("Downloading Synapse Entities...\n")
 	if(intersectClnc==TRUE){
 	synapseObj=list(e=e.impute[,intersect.set],metagene=metagene[,intersect.set],sur=surv.complete[intersect.set,], type=anno.ID    )
 	}else{
-	synapseObj=list(e=e.impute,metagene=metagene,sur=surv.complete[intersect.set,], type=anno.ID)
+	synapseObj=list(e=e.impute,metagene=metagene,sur=surv.complete[intersect.set,], type=anno.ID, gender=gender)
 	}
 
 
@@ -175,8 +186,32 @@ cat("Downloading Synapse Entities...\n")
 
 
 
+#Adding new phenotypes
+.notrun<-function(){
+
+for (i in 1:12){
+
+	cli = loadEntity(datasetList[i,1]) 
+	clinical.raw =read.delim( file.path(cli$cacheDir, cli$files[[1]][1]) ,header=T)
+	rownames(clinical.raw)=clinical.raw[,1]
+		
+
+	gender=as.character(clinical.raw[,"gender"])
+	gender=gsub('FEMALE',1,gender)
+	gender=gsub('MALE',-1,gender)
+	gender=as.numeric(gender)
+	gender[which(is.na(gender)==TRUE)]=0
+	
+	names(gender)=clinical.raw[,1]
+	print(gender)
+	
+	synObjList.f[[i]]$gender=gender
+
+	}
 
 
+
+}
 
 
 
