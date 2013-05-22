@@ -1,2 +1,7 @@
 #Package:	Biological Figure Rendering Package using ggPlot	
 #Author:	Tai-Hsien Ou Yang
+
+#Data Loading
+#Kaplan Meier
+#Color-coded Scatterplot
+#Aligned Heatmap

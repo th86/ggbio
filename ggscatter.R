@@ -120,7 +120,7 @@ ggscatter.gene.meth<-function( synObjList, geneName, methName1, methName2, datas
 				axis.text=element_text(size=4)
 				)
 					
-		
+	p<-p+coord_fixed(ratio = 1)
 
 	scatter.gg[[i]]<-p +scale_color_gradient2("LYM",low="blue", high="red", mid ="gray", midpoint=0 )	#Don't use "="
 	}
